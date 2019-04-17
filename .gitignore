@@ -18,3 +18,6 @@ coverage
 
 #PaxHeader files
 PaxHeader
+
+#Executables
+*.exe
