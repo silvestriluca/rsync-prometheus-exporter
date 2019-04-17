@@ -11,14 +11,14 @@ import (
 )
 
 //Setup a http endpoint to expose metrics to Prometheus.io
-func setupHttpListener() {
+func setupHTTPListener() {
 	http.Handle("/metrics", promhttp.Handler())
 	http.ListenAndServe(":2112", nil)
 }
 
 func main() {
 	//Launch HTTP Server
-	go setupHttpListener()
+	go setupHTTPListener()
 
 	//Defines a command that invokes "tail"
 	cmd := exec.Command("tail", "-f", "-n", "+1", "./rsync_example.log")
