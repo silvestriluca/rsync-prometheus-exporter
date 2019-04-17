@@ -1,0 +1,21 @@
+2017/09/01 03:10:16 [17161] connect from 2001:db8:4f8:191:1056::2
+2017/09/01 03:10:16 [17161] rsync on sources/metadata/timestamp.chk from 2001:db8:4f8:191:1056::2
+2017/09/01 03:10:18 [16551] sent 6092862 bytes  received 55750 bytes  total size 302215840
+2017/09/01 03:10:16 [17161] sent 346 bytes  received 99 bytes  total size 32
+2017/09/01 03:10:16 [17164] connect from 192.0.2.46
+2017/09/01 03:10:16 [17164] rsync on sources/ from 192.0.2.46
+2017/09/01 03:10:16 [16538] sent 6092862 bytes  received 55750 bytes  total size 302215840
+2017/09/01 03:10:20 [17173] connect from 192.0.2.202
+2017/09/01 03:10:20 [17173] rsync on sources/metadata/timestamp.chk from 192.0.2.202
+2017/09/01 03:10:20 [17173] sent 346 bytes  received 99 bytes  total size 32
+2017/09/01 03:10:18 [16769] sent 4675329 bytes  received 25683 bytes  total size 302215840
+2017/09/01 03:10:20 [17234] connect from 192.0.2.199
+2017/09/01 03:10:20 [17234] rsync on sources/ from 192.0.2.199
+2017/09/01 03:10:22 [16547] sent 6075891 bytes  received 38779 bytes  total size 302215840
+2017/09/01 03:10:23 [17164] sent 6092862 bytes  received 55750 bytes  total size 302215840
+2017/09/01 03:10:25 [16720] sent 6075891 bytes  received 38779 bytes  total size 302215840
+2017/09/01 03:10:26 [17240] connect from 203.0.113.171
+2017/09/01 03:10:26 [17240] rsync on sources/metadata/timestamp.chk from 203.0.113.171
+2017/09/01 03:10:26 [17240] sent 346 bytes  received 99 bytes  total size 32
+2017/09/01 03:10:26 [17242] connect from 203.0.113.205
+2017/09/01 03:10:26 [17242] rsync on sources/ from 203.0.113.205
