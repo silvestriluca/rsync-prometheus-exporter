@@ -9,4 +9,6 @@ COPY get.sh ./
 RUN sh get.sh
 ## Installs codebase and makes sure all dependencies are there.
 COPY . .
-RUN go get ./...
+RUN go get ./... \
+  && go install ./...
+EXPOSE 2112

@@ -21,3 +21,6 @@ PaxHeader
 
 #npm debug logs
 npm-debug.log
+
+# Exe files
+*.exe
