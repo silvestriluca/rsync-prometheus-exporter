@@ -1,0 +1,23 @@
+# package directories
+node_modules
+jspm_packages
+
+# Serverless directories
+.serverless
+
+# Private data (not to be committed)
+private
+certs
+
+# Lambdabuilder directory
+.lambdabuilder
+
+#Istanbul artifacts
+coverage
+.nyc_output
+
+#PaxHeader files
+PaxHeader
+
+#npm debug logs
+npm-debug.log
