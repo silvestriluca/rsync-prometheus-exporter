@@ -26,14 +26,48 @@ import (
 	"os"
 	"os/exec"
 	"strconv"
+	"strings"
+	"time"
 
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promauto"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
+// GLOBAL CONSTANTS
+const (
+	//Metrics
+	Connections  = "connections_to_rsync"
+	Executions   = "rsync_executions"
+	DataSent     = "data_sent"
+	DataReceived = "data_received"
+)
+
 // GLOBAL VARIABLES
+//1. Command line related variables
 var (
 	portPtr    *int   //TCP port to listen fo /metrics endpoint
 	file2Parse string //Log file that has to be parsed
+)
+
+//2. Metrics related variables
+var (
+	connectionsMetric = promauto.NewCounter(prometheus.CounterOpts{
+		Name: Connections,
+		Help: "The total number of connections to rsync daemon",
+	})
+	executionsMetric = promauto.NewCounter(prometheus.CounterOpts{
+		Name: Executions,
+		Help: "The total number of rsync executions",
+	})
+	dataSentMetric = promauto.NewCounter(prometheus.CounterOpts{
+		Name: DataSent,
+		Help: "The total data sent (bytes)",
+	})
+	dataReceivedMetric = promauto.NewCounter(prometheus.CounterOpts{
+		Name: DataReceived,
+		Help: "The total data received (bytes)",
+	})
 )
 
 //Setup a http endpoint to expose metrics to Prometheus.io
@@ -53,6 +87,67 @@ func startMessage() {
 	fmt.Println("****************************************************************")
 }
 
+//Analyze the log line looking for relevant metrics
+func parseLogLine(logLine string) (parsed string) {
+	//Takes of the timestamp + PID from the log line
+	parsablePart := strings.Split(logLine, "] ")[1]
+	//Extract the timestamp and converts it in a date object
+	datePart := strings.Split(logLine, " [")[0]
+	t, err := time.Parse("2006/01/02 15:04:05", datePart)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	//Outputs the extracted data
+	fmt.Println(t)
+	fmt.Println(parsablePart)
+
+	//Parse the event and extract relevant metrics
+	words := strings.Split(parsablePart, " ")
+	fmt.Println(words)
+	switch words[0] {
+	case "connect":
+		recordMetrics(Connections, 1)
+	case "rsync":
+		recordMetrics(Executions, 1)
+	case "sent":
+		bytesSent, err1 := strconv.Atoi(words[1])
+		if err1 != nil {
+			fmt.Println("Error while converting sent data value")
+		} else {
+			recordMetrics(DataSent, bytesSent)
+		}
+		bytesReceived, err2 := strconv.Atoi(words[5])
+		if err2 != nil {
+			fmt.Println("Error while converting received data value")
+		} else {
+			recordMetrics(DataReceived, bytesReceived)
+		}
+	}
+
+	//Returns the parsable part of the log line
+	return parsablePart
+}
+
+//Updates the metrics exposed to Prometheus
+func recordMetrics(metricType string, value int) {
+	//Converts value to float64
+	floatValue := float64(value)
+
+	//Updates the metrics acording to the type
+	switch metricType {
+	case Connections:
+		connectionsMetric.Add(floatValue)
+	case Executions:
+		executionsMetric.Add(floatValue)
+	case DataSent:
+		dataSentMetric.Add(floatValue)
+	case DataReceived:
+		dataReceivedMetric.Add(floatValue)
+	}
+}
+
+//Init function
 func init() {
 	//Prints the start message
 	startMessage()
@@ -73,6 +168,7 @@ func init() {
 	fmt.Println("****************************************************************")
 }
 
+//Main procedure
 func main() {
 	//Launch HTTP Server
 	go setupHTTPListener()
@@ -96,7 +192,10 @@ func main() {
 		for scanner.Scan() {
 			fmt.Printf("Line %d", i)
 			fmt.Printf("\t > %s\n", scanner.Text())
+			fmt.Printf("\t > %s\n", scanner.Text())
 			i = i + 1
+			//Parse the single line
+			parseLogLine(scanner.Text())
 		}
 	}()
 
