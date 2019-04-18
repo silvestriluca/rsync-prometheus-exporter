@@ -27,7 +27,6 @@ import (
 	"os/exec"
 	"strconv"
 	"strings"
-	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promauto"
@@ -91,20 +90,18 @@ func startMessage() {
 func parseLogLine(logLine string) (parsed string) {
 	//Takes of the timestamp + PID from the log line
 	parsablePart := strings.Split(logLine, "] ")[1]
-	//Extract the timestamp and converts it in a date object
-	datePart := strings.Split(logLine, " [")[0]
-	t, err := time.Parse("2006/01/02 15:04:05", datePart)
-	if err != nil {
-		fmt.Println(err)
-	}
 
-	//Outputs the extracted data
-	fmt.Println(t)
-	fmt.Println(parsablePart)
+	/*
+		//Extract the timestamp and converts it in a date object
+		datePart := strings.Split(logLine, " [")[0]
+		t, err := time.Parse("2006/01/02 15:04:05", datePart)
+		if err != nil {
+			fmt.Println(err)
+		}
+	*/
 
 	//Parse the event and extract relevant metrics
 	words := strings.Split(parsablePart, " ")
-	fmt.Println(words)
 	switch words[0] {
 	case "connect":
 		recordMetrics(Connections, 1)
@@ -186,16 +183,17 @@ func main() {
 	//Create a scanner on the IO Buffer
 	scanner := bufio.NewScanner(cmdReader)
 
-	//Launch a goroutine that scans the pipeline until it gets closed
+	//Launch a goroutine that scans the pipeline LIVE (line by line) until it gets closed
 	go func() {
 		i := 0
 		for scanner.Scan() {
+			//Outputs a single line (LIVE)
+			line := scanner.Text()
 			fmt.Printf("Line %d", i)
-			fmt.Printf("\t > %s\n", scanner.Text())
-			fmt.Printf("\t > %s\n", scanner.Text())
+			fmt.Printf("\t > %s\n", line)
 			i = i + 1
 			//Parse the single line
-			parseLogLine(scanner.Text())
+			parseLogLine(line)
 		}
 	}()
 
