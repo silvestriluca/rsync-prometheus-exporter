@@ -54,16 +54,23 @@ func startMessage() {
 }
 
 func init() {
+	//Prints the start message
+	startMessage()
+	//Evaluates the cli parameters and assign default values:
+	//Port
 	portPtr = flag.Int("p", 2112, "TCP port to listen fo /metrics endpoint")
+	//File to parse
 	flag.Parse()
 	if len(flag.Args()) >= 1 {
 		file2Parse = flag.Arg(0)
 	} else {
 		file2Parse = "./rsync_example.log"
 	}
+	//Outputs the cli parameters values
 	fmt.Println("Value of port declared: ", *portPtr)
 	fmt.Println("File to parse: ", file2Parse)
-	startMessage()
+	//
+	fmt.Println("****************************************************************")
 }
 
 func main() {
