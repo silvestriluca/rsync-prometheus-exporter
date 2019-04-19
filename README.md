@@ -7,6 +7,10 @@ rsync metrics exporter for **Prmoetheus.io**
 - Golang >= 1.12
 - [OPTIONAL] Docker
 
+### Code files
+- `exporter.go`       => main code
+- `exporter_test.go`  => unit [tests](#Tests)
+
 ### Design choices / Architecture
 This utility is written in GO and uses `tail -f -n +1 [logfile]` STDOUTPUT to parse a live logfile.
 
