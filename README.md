@@ -73,7 +73,7 @@ To run tests:
 
 `go test`
 
-**IMPORTANT NOTICE IF USING DOCKER IMAGE:** Tests require `gcc`, so the provided Alpine based container is not a suitable option to execute them. Use the standard `golang:1.12` instead or run them in a linux environment with `gcc` and `Go 1.12`. For convenience there is a [Dockerfile for this purpose](./Dockerfile).
+**IMPORTANT NOTICE IF USING DOCKER IMAGE:** Tests require `gcc`, so the provided Alpine based container is not a suitable option to execute them. Use the standard `golang:1.12` instead or run them in a linux environment with `gcc` and `Go 1.12`. For convenience there is a [Dockerfile for this purpose](./Dockerfile4test).
 
 To use it: 
 `docker build --rm -f "Dockerfile4test" -t <AN IMAGE NAME SPECIFIC FOR TEST HERE>:latest .`
