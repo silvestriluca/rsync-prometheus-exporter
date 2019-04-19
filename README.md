@@ -66,7 +66,7 @@ Once the app is compiled and named `exporter`:
 
 `-p`            TCP port to listen fo /metrics endpoint
 
-# Tests:
+# Tests
 Some unit tests are provided.
 
 **IMPORTANT:** Tests require `gcc`, so the provided Alpine based container is not a suitable option to execute them. Use the standard `golang:1.12` instead or run them in a linux environment with `gcc` and `Go 1.12`
