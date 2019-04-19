@@ -52,7 +52,7 @@ There is a Dockerfile to build an Alpine based container with the compiled execu
 Once the repository is in a `<folder>`:
 1. `cd <folder>`
 2. `docker build --rm -f "Dockerfile" -t <AN IMAGE NAME HERE>:latest .`
-3. `docker run -it -p 2112:2112 -v <PATH TO RSYNC LOG FILE IN HOST>:<MOUNT POINT IN THE CONTAINER>:ro <AN IMAGE NAME HERE>:latest sh`
+3. `docker run --rm -it -p 2112:2112 -v <PATH TO RSYNC LOG FILE IN HOST>:<MOUNT POINT IN THE CONTAINER>:ro <AN IMAGE NAME HERE>:latest sh`
 4. Run the app with: `app [MOUNT POINT IN THE CONTAINER]`
 5. Metrics will be exposed to `http://localhost:2112/metrics` or, if you use `docker-machine`, `http://DOCKER_MACHINE_IP:2112/metrics`
 
@@ -69,10 +69,14 @@ Once the app is compiled and named `exporter`:
 # Tests
 Some unit tests are provided.
 
-**IMPORTANT:** Tests require `gcc`, so the provided Alpine based container is not a suitable option to execute them. Use the standard `golang:1.12` instead or run them in a linux environment with `gcc` and `Go 1.12`
-
 To run tests:
+
 `go test`
+
+**IMPORTANT NOTICE IF USING DOCKER IMAGE:** Tests require `gcc`, so the provided Alpine based container is not a suitable option to execute them. Use the standard `golang:1.12` instead or run them in a linux environment with `gcc` and `Go 1.12`. For convenience there is a [Dockerfile for this purpose](./Dockerfile).
+
+To use it: 
+`docker build --rm -f "Dockerfile4test" -t <AN IMAGE NAME SPECIFIC FOR TEST HERE>:latest .`
 
 # License
 This package is released under the [GPLv3 license](./LICENSE)

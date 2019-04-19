@@ -1,0 +1,15 @@
+FROM golang:1.12
+## Installs rsync and git
+RUN apt-get update && apt-get install -y \
+    rsync \
+    && apt-get autoremove -y \
+    && rm -rf /var/lib/apt/lists/*
+## Installs dependencies (listed in get.sh file)
+WORKDIR /go/src/app
+COPY get.sh ./
+RUN sh get.sh
+## Installs codebase and makes sure all dependencies are there.
+COPY . .
+RUN go get ./... \
+  && go install ./...
+EXPOSE 2112
